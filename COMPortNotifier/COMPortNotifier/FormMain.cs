@@ -27,6 +27,7 @@ namespace COMPortNotifier
             /*foreach (var p in _ports)
                 p.Value.Connected = false;*/
 
+            var connectedNow = new List<String>();
             var updateList = false;
             var s = SerialPort.GetPortNames();
 
@@ -42,6 +43,7 @@ namespace COMPortNotifier
             {
                 if (!_ports.ContainsKey(p))
                 {
+                    connectedNow.Add(p);
                     _ports.Add(p, new DetectedSerialPort());
                     updateList = true;
                 }
@@ -49,6 +51,7 @@ namespace COMPortNotifier
                 {
                     if (!_ports[p].Connected)
                     {
+                        connectedNow.Add(p);
                         _ports[p].Timestamp = DateTime.Now;
                         _ports[p].Connected = true;
                         updateList = true;
@@ -65,6 +68,30 @@ namespace COMPortNotifier
             foreach (var p in _ports)
                 listBoxCOMPorts.Items.Insert(0, DetectedSerialPort.ToString(p));
             listBoxCOMPorts.SelectedIndex = selected == -1? 0: selected;
+
+            // Notification
+            if(!this.ShowInTaskbar && connectedNow.Count > 0 && listBoxCOMPorts.Items.Count != connectedNow.Count)
+                notifyIconNotification.ShowBalloonTip(10, this.Text, String.Join(", ", connectedNow), ToolTipIcon.Info);
+        }
+
+        private void notifyIconNotification_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            this.WindowState = FormWindowState.Normal;
+        }
+
+        private void notifyIconNotification_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Normal;
+        }
+
+        private void FormMain_Resize(object sender, EventArgs e)
+        {
+            this.ShowInTaskbar = this.WindowState != FormWindowState.Minimized;
+        }
+
+        private void notifyIconNotification_BalloonTipClicked(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Normal;
         }
     }
 

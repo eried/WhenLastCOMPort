@@ -56,8 +56,11 @@
             // 
             // notifyIconNotification
             // 
-            this.notifyIconNotification.Text = "notifyIcon1";
+            this.notifyIconNotification.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIconNotification.Icon")));
             this.notifyIconNotification.Visible = true;
+            this.notifyIconNotification.BalloonTipClicked += new System.EventHandler(this.notifyIconNotification_BalloonTipClicked);
+            this.notifyIconNotification.Click += new System.EventHandler(this.notifyIconNotification_Click);
+            this.notifyIconNotification.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIconNotification_MouseDoubleClick);
             // 
             // labelWaiting
             // 
@@ -79,8 +82,10 @@
             this.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(5, 7, 5, 7);
+            this.MaximizeBox = false;
             this.Name = "FormMain";
             this.Text = "Connected COM Ports";
+            this.Resize += new System.EventHandler(this.FormMain_Resize);
             this.ResumeLayout(false);
 
         }
