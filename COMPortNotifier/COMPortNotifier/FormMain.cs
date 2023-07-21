@@ -67,7 +67,9 @@ namespace COMPortNotifier
 
             foreach (var p in _ports)
                 listBoxCOMPorts.Items.Insert(0, DetectedSerialPort.ToString(p));
-            listBoxCOMPorts.SelectedIndex = selected == -1? 0: selected;
+
+            if(listBoxCOMPorts.Items.Count> 0)
+                listBoxCOMPorts.SelectedIndex = selected == -1? 0: selected;
 
             // Notification
             if(!this.ShowInTaskbar && connectedNow.Count > 0 && listBoxCOMPorts.Items.Count != connectedNow.Count)
